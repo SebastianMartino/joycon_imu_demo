@@ -43,6 +43,7 @@ def print_motion_data(status_data, joycon_side):
     gyro = status_data.get("gyro", {})
     print(f"[{joycon_side.capitalize()} Joy-Con] "
           f"Gyro: X: {gyro.get('x')}, Y: {gyro.get('y')}, Z: {gyro.get('z')}")
+          # f"Accel: X: {accel.get('x')}, Y: {accel.get('y')}, Z: {accel.get('z')}")
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Joy-Con Motion Logger")
@@ -91,7 +92,7 @@ def main():
         print("No Joy-Cons connected.")
         return
 
-    # Turn on Joy-Con LEDs
+    # Set Joy-Con LEDs
     for joycon_side, joycon in joycons:
         joycon.set_player_lamp_on(lamp_pattern)
         lamp_pattern += 1
@@ -110,10 +111,14 @@ def main():
                 buttons = status.get("buttons", {})
 
                 pressed = is_calibration_button_pressed(buttons, joycon_side)
+
+                # Debounce, don't register additional button press if currently calibrating
                 if pressed and not calibration_state[joycon_side]:
                     calibration_state[joycon_side] = True
 
                     print(f"Calibrating {joycon_side} Joy-Con")
+
+                    # Use current gyro & acceleration data as 0 offset
                     gyro = status.get("gyro", {})
                     accel = status.get("accel", {})
                     offset_gyro = (
@@ -143,7 +148,7 @@ def main():
                 time.sleep(sleep_time)
 
     except KeyboardInterrupt:
-        print("\nLogging stopped by user.")
+        print("\nLogging ended")
     except Exception as e:
         print(f"Error: {e}")
     finally:

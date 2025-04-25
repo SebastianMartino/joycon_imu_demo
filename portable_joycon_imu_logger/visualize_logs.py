@@ -45,7 +45,7 @@ def plot_joycon_motion(side, motion_data):
     axs[0].plot(time_sec, accel["y"], label="Accel Y", color="g")
     axs[0].plot(time_sec, accel["z"], label="Accel Z", color="b")
     axs[0].set_ylabel("Acceleration")
-    axs[0].set_title("Accelerometer")
+    axs[0].set_title("Accelerometer Data")
     axs[0].legend()
     axs[0].grid(True)
 
@@ -53,9 +53,8 @@ def plot_joycon_motion(side, motion_data):
     axs[1].plot(time_sec, gyro["x"], label="Gyro X", color="r")
     axs[1].plot(time_sec, gyro["y"], label="Gyro Y", color="g")
     axs[1].plot(time_sec, gyro["z"], label="Gyro Z", color="b")
-    axs[1].set_xlabel("Time (s)")
     axs[1].set_ylabel("Rotation Rate")
-    axs[1].set_title("Gyroscope")
+    axs[1].set_title("Gyroscope Data")
     axs[1].legend()
     axs[1].grid(True)
 
